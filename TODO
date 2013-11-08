@@ -1,0 +1,6 @@
+Todo list
+=========
+
+ - Login/Password/Account Authentication
+ - Add a raw_input() for all create_ functions with known attributes
+ - Better usage help
