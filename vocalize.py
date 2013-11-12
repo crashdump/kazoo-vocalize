@@ -26,14 +26,16 @@ class Client(kazoo.Client):
     """ Client class inherited from kazoo.Client Object. Allow us to set
         api_url: Client(api_url, api_key=None, password=None,
         account_name=None, username=None) """
-    def __init__(self, api_url=None, *args):
+
+    def __init__(self, api_url='http://localhost:8000/v1', *args):
         super(Client, self).__init__(*args)
-        self.BASE_URL = api_url if api_url else 'http://localhost:8000/v1'
+        self.BASE_URL = api_url
 
 
 class Account(object):
     def __init__(self, acct_id):
         self.acct_id = acct_id
+        self.verbosity = 0
         self.api = Client(args.api_url, args.api_key)
         self.api.authenticate()
 
@@ -41,7 +43,9 @@ class Account(object):
         return str(self.acct_id)
 
     def _get_user_input(self, question, is_mandatory, def_val):
-        """ Ask a question to the user and return the answer or None"""
+        """ Ask user for input.
+            (str, bool, str) -> str or None"""
+
         try:
             # If it's not mandatory, offer the user to pass on.
             if not is_mandatory:
@@ -50,14 +54,18 @@ class Account(object):
 
             # Get the user's input and return it (in unicode)
             input = raw_input('%s (ex: %s)? ' % (question, def_val))
-            return input.encode('utf-8') if len(input) > 1 else def_val
+            return input.encode('utf-8') if len(input) else def_val
 
         except ValueError, e:
             print ("Invalid input: %s" % e)
-            return None
+
+        return None
 
     def _get_user_input_multi(self, d):
-        """ Get a dict and feed _get_user_input() with it. Returns a dict."""
+        """ Fills nested dict with _get_user_input() and pop() non
+            mandatory keys.
+            (dict containing tuples) -> dict"""
+
         # If it's a dict, let's dig...
         if isinstance(d, dict):
             # Sort the questions: mandatory fields first
@@ -75,14 +83,34 @@ class Account(object):
                         d[k] = a
         return d
 
+    def _api_send_req(self, cmd, data=None):
+        """ Calls kazoo-api functions. See
+        https://kazoo-api.readthedocs.org/en/latest/
+        (str, str or dict) -> str or False"""
+
+        if self.verbosity > 0:
+            print " -> kazoo.api.%s(%s, %s)" % (cmd, self.acct_id, data)
+
+        try:
+            if data: 
+                return getattr(self.api, cmd)(self.acct_id, data)
+            else:
+                return getattr(self.api, cmd)(self.acct_id)
+
+        except kazoo.exceptions.KazooApiError, e:
+            print ' * ERR (KazooApiError): %s' % e
+        except kazoo.exceptions.KazooApiBadDataError, e:
+            print ' * ERR (ApiBadDataError): %s' % e
+
+        return False
+
     def create_device(self, args=[]):
-        """ inputs: name, sip/realm, sip/method, sip/username,
-                    sip/password, caller_id/external/number,
-                    owner_id"""
+        """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
+            () -> dict or False"""
 
         properties = {
             'name': ("Name", True, u"Joe's Office Phone"),
-            'owner_id': ("Owner ID", True, u"4152ed2b42"),
+            'owner_id': ("Owner ID", True, u"1b5edd11f3464..."),
             'sip': {
                 'realm': ("SIP Realm", True, u"whistle.yourdomain.net"),
                 'method': ("SIP Auth method", True, u"password"),
@@ -100,30 +128,20 @@ class Account(object):
                 }
             }
         }
-
-        data = self._get_user_input_multi(properties)
-
-        print data
-
-        try:
-            return self.api.create_voicemail_box(self.acct_id, data) \
-                if data else False
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        properties = self._get_user_input_multi(properties)
+        return self._api_send_req('create_voicemail_box', properties)
 
     def create_phone_number(self, args=[]):
-        """ inputs: phone_number"""
+        """ https://2600hz.atlassian.net/wiki/display/docs/Phone+Number+APIs
+            () -> dict or False"""
+
         phone_number = self._get_user_input("Phone number", True, "+44132...")
-        try:
-            return self.api.create_phone_number(self.acct_id, phone_number) \
-                if phone_number else False
-        except kazoo.exceptions.KazooApiError, e:
-            print 'Err: %s' % e
-        return False
+        return self._api_send_req('create_phone_number', phone_number)
 
     def create_voicemail_box(self, args=[]):
-        """ inputs: mailbox, name """
+        """ https://2600hz.atlassian.net/wiki/display/docs/Build+a+Voicemail+Service
+            () -> dict or False"""
+
         properties = {
             'mailbox': ("Mailbox number", True, u"9001"),
             'name': ("Mailbox name", True, u"Mailbox 9001"),
@@ -135,105 +153,78 @@ class Account(object):
             'skip_instructions': ("Skip instructions", False, u"false"),
             'owner_id': ("Owner id", False, u"1b5edd11f3464...")
         }
-
-        data = self._get_user_input_multi(properties)
-
-        try:
-            return self.api.create_voicemail_box(self.acct_id, data) \
-                if data else False
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        properties = self._get_user_input_multi(properties)
+        return self._api_send_req('create_voicemail_box', properties)
 
     def delete_callflow(self, args=[]):
-        """ inputs: callflow_id"""
+        """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
+            () -> dict or False"""
+
         callfow_id = self._get_user_input("Callflaw ID", True, "9cef8acde...")
-        try:
-            return self.api.delete_callflow(self.acct_id, callfow_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        return self._api_send_req('delete_callflow', callfow_id)
 
     def get_account(self, args=[]):
-        """ inputs: none """
-        try:
-            return self.api.get_account(self.acct_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        """ https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_account')
 
     def get_account_children(self, args=[]):
-        """ inputs: none """
-        try:
-            return self.api.get_account_children(self.acct_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        """ https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_account_children')
 
     def get_account_descendants(self, args=[]):
-        """ inputs: none """
-        try:
-            return self.api.get_account_descendants(self.acct_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        """ https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_account_descendants')
+        
 
     def get_all_devices_status(self, args=[]):
-        """ inputs: none """
-        try:
-            return self.api.get_all_devices_status(self.acct_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_all_devices_status')
 
     def get_all_media(self, args=[]):
-        """ inputs: none """
-        try:
-            return self.api.get_all_media(self.acct_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
+        """ https://2600hz.atlassian.net/wiki/display/docs/Resources+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_all_media')
 
     def get_callflow(self, args=[]):
-        """ inputs: callflow id """
+        """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
+            () -> dict or False"""
+
         callfow_id = self._get_user_input("Callflaw ID", True, "9cef8acde...")
-        try:
-            return self.api.get_callflow(self.acct_id, callfow_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        return self._api_send_req('get_callflow', callfow_id)
 
     def get_callflows(self, args=[]):
-        """ inputs: none """
-        try:
-            return self.api.get_callflows(self.acct_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_callflows')
 
     def get_device(self, args=[]):
-        """ inputs: callflow id """
+        """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
+            () -> dict or False"""
+
         device_id = self._get_user_input("Device ID", True, "9cef8acde...")
-        try:
-            return self.api.get_device(self.acct_id, device_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        return self._api_send_req('get_device', device_id)
 
     def get_devices(self, args=[]):
-        """ inputs: none """
-        try:
-            return self.api.get_devices(self.acct_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_devices')
 
     def get_users(self, args=[]):
-        """ inputs: none """
-        try:
-            return self.api.get_users(self.acct_id)
-        except kazoo.exceptions.KazooApiError, e:
-            print 'ERR (KazooApiError): %s' % e
-        return False
+        """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_users')
 
 
 def display_json(json_data):
@@ -262,6 +253,7 @@ if __name__ == "__main__":
     #                      account_name="my account name")
 
     account = Account(args.acct_id)
+    account.verbosity = args.verbosity
 
     do = getattr(account, args.cmd)(*args.cmd_arg)
     display_json(do) if do else 'err'
