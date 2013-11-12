@@ -159,7 +159,7 @@ class Account(object):
 
         return False
 
-    def activate_phone_number(self, args=[]):
+    def activate_phone_number(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
@@ -169,170 +169,170 @@ class Account(object):
         return self._api_send_req('activate_phone_number',
                                  (properties, phone_number))
 
-    def create_callflow(self, args=[]):
+    def create_callflow(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
             () -> dict or False"""
 
         properties = self._get_user_input_multi(self.kz_struct['callflow'])
         return self._api_send_req('create_callflow', properties)
 
-    def create_device(self, args=[]):
+    def create_device(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
         properties = self._get_user_input_multi(self.kz_struct['device'])
         return self._api_send_req('create_voicemail_box', properties)
 
-    def create_phone_number(self, args=[]):
+    def create_phone_number(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Phone+Number+APIs
             () -> dict or False"""
 
         phone_number = self._get_user_input("Phone number", True, "+44132...")
         return self._api_send_req('create_phone_number', phone_number)
 
-    def create_voicemail_box(self, args=[]):
+    def create_voicemail_box(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Build+a+Voicemail+Service
             () -> dict or False"""
 
         properties = self._get_user_input_multi(self.kz_struct['voicemail'])
         return self._api_send_req('create_voicemail_box', properties)
 
-    def delete_callflow(self, args=[]):
+    def delete_callflow(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
             () -> dict or False"""
 
         callfow_id = self._get_user_input("Callflaw ID", True, "9cef8acde...")
         return self._api_send_req('delete_callflow', callfow_id)
 
-    def delete_device(self, args=[]):
+    def delete_device(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
         device_id = self._get_user_input("Device ID", True, "9cef8acde...")
         return self._api_send_req('delete_device', device_id)
 
-    def delete_queue(self, args=[]):
+    def delete_queue(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Queues+API
             () -> dict or False"""
 
         queue_id = self._get_user_input("Queue ID", True, "9cef8acde...")
         return self._api_send_req('delete_queue', queue_id)
 
-    def delete_user(self, args=[]):
+    def delete_user(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
         user_id = self._get_user_input("User ID", True, "9cef8acde...")
         return self._api_send_req('delete_usere', user_id)
 
-    def get_account(self, args=[]):
+    def get_account(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
             () -> dict or False"""
 
         return self._api_send_req('get_account')
 
-    def get_account_children(self, args=[]):
+    def get_account_children(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
             () -> dict or False"""
 
         return self._api_send_req('get_account_children')
 
-    def get_account_descendants(self, args=[]):
+    def get_account_descendants(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
             () -> dict or False"""
 
         return self._api_send_req('get_account_descendants')
 
-    def get_all_devices_status(self, args=[]):
+    def get_all_devices_status(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
         return self._api_send_req('get_all_devices_status')
 
-    def get_all_media(self, args=[]):
+    def get_all_media(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Resources+API
             () -> dict or False"""
 
         return self._api_send_req('get_all_media')
 
-    def get_callflow(self, args=[]):
+    def get_callflow(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
             () -> dict or False"""
 
         callfow_id = self._get_user_input("Callflaw ID", True, "9cef8acde...")
         return self._api_send_req('get_callflow', callfow_id)
 
-    def get_callflows(self, args=[]):
+    def get_callflows(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
             () -> dict or False"""
 
         return self._api_send_req('get_callflows')
 
-    def get_device(self, args=[]):
+    def get_device(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
         device_id = self._get_user_input("Device ID", True, "9cef8acde...")
         return self._api_send_req('get_device', device_id)
 
-    def get_devices(self, args=[]):
+    def get_devices(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
         return self._api_send_req('get_devices')
 
-    def get_queue(self, args=[]):
+    def get_queue(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Queues+API
             () -> dict or False"""
 
         queue_id = self._get_user_input("Queue ID", True, "9cef8acde...")
         return self._api_send_req('get_queue', queue_id)
 
-    def get_queues(self, args=[]):
+    def get_queues(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Queues+API
             () -> dict or False"""
 
         return self._api_send_req('get_queues')
 
-    def get_server_log(self, args=[]):
+    def get_server_log(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/...
             () -> dict or False"""
 
         return self._api_send_req('get_server_log')
     
-    def get_servers(self, args=[]):
+    def get_servers(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/...
             () -> dict or False"""
 
         return self._api_send_req('get_servers')
 
-    def get_user(self, args=[]):
+    def get_user(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
         user_id = self._get_user_input("User ID", True, "9cef8acde...")
         return self._api_send_req('get_user', user_id)
 
-    def get_users(self, args=[]):
+    def get_users(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
         return self._api_send_req('get_users')
 
-    def get_voicemail_box(self, args=[]):
+    def get_voicemail_box(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
         vmbox_id = self._get_user_input("Voicemail Box ID", True, "9cef8acde...")
         return self._api_send_req('get_voicemail_box', vmbox_id)
 
-    def get_voicemail_boxes(self, args=[]):
+    def get_voicemail_boxes(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
         return self._api_send_req('get_voicemail_boxes')
 
-    def update_device(self, args=[]):
+    def update_device(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
@@ -361,20 +361,28 @@ if __name__ == "__main__":
     parser.add_argument('-v', action='count', dest='verbosity', default=0)
     parser.add_argument('api_key', action='store', help='API Key')
     parser.add_argument('acct_id', action='store', help='Account ID')
-    parser.add_argument('cmd', choices=cmd_list)
-    parser.add_argument('cmd_arg', nargs='?', default=[],
-                        help='argument for the command, if needed')
+    parser.add_argument('cmd')
 
     args = parser.parse_args()
+
+    if args.cmd not in cmd_list:
+        print 'Command unknown. Here are the commands I understand:'
+        for cmd in cmd_list:
+            print ' - %s' % cmd
+        exit(0)
 
     # @todo: Implement username/password/account login
     #client = kazoo.Client(username="myusername", password="mypassword",
     #                      account_name="my account name")
 
-    account = Account(args.acct_id)
-    account.verbosity = args.verbosity
+    try:
+        account = Account(args.acct_id)
+        account.verbosity = args.verbosity
+    except kazoo.exceptions.KazooApiBadDataError, e:
+        print ' * ERR: Check Key and account id'
+        exit(1)
 
-    response = getattr(account, args.cmd)(*args.cmd_arg)
+    response = getattr(account, args.cmd)()
     if response:
         display_json(response)
 
