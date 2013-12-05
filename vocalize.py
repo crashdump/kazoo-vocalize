@@ -164,8 +164,7 @@ class Account(object):
             () -> dict or False"""
 
         phone_number = self._get_user_input("Phone number", True, "+44132...")
-        properties = self._get_user_input_multi(
-            self.kz_struct['phone_number'])
+        properties = self._get_user_input_multi(self.kz_struct['phone_number'])
         return self._api_send_req('activate_phone_number',
                                  (properties, phone_number))
 
@@ -173,57 +172,120 @@ class Account(object):
         """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
             () -> dict or False"""
 
-        properties = self._get_user_input_multi(self.kz_struct['callflow'])
-        return self._api_send_req('create_callflow', properties)
+        return self._api_send_req('create_callflow', 
+                    self._get_user_input_multi(self.kz_struct['callflow']))
 
     def create_device(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
-        properties = self._get_user_input_multi(self.kz_struct['device'])
-        return self._api_send_req('create_voicemail_box', properties)
+        return self._api_send_req('create_voicemail_box',
+                    self._get_user_input_multi(self.kz_struct['device']))
 
     def create_phone_number(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Phone+Number+APIs
             () -> dict or False"""
 
-        phone_number = self._get_user_input("Phone number", True, "+44132...")
-        return self._api_send_req('create_phone_number', phone_number)
+        return self._api_send_req('create_phone_number', 
+                    self._get_user_input("Phone number", True, "+44132..."))
 
     def create_voicemail_box(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Build+a+Voicemail+Service
             () -> dict or False"""
 
-        properties = self._get_user_input_multi(self.kz_struct['voicemail'])
-        return self._api_send_req('create_voicemail_box', properties)
+        return self._api_send_req('create_voicemail_box',
+                    self._get_user_input_multi(self.kz_struct['voicemail']))
 
     def delete_callflow(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
             () -> dict or False"""
 
-        callfow_id = self._get_user_input("Callflaw ID", True, "9cef8acde...")
-        return self._api_send_req('delete_callflow', callfow_id)
+        return self._api_send_req('delete_callflow',
+                    self._get_user_input("Callflaw ID", True, "9cef8acde..."))
+
+    def delete_conference(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/Conferences+API
+            () -> dict or False"""
+
+        return self._api_send_req('delete_conference',
+                    self._get_user_input("Conference ID", True, "9cef8acde..."))
 
     def delete_device(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
-        device_id = self._get_user_input("Device ID", True, "9cef8acde...")
-        return self._api_send_req('delete_device', device_id)
+        return self._api_send_req('delete_device',
+                    self._get_user_input("Device ID", True, "9cef8acde..."))
+
+    def delete_directory(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/Directory+API
+            () -> dict or False"""
+
+        return self._api_send_req('delete_directory',
+                    self._get_user_input("Directory ID", True, "9cef8acde..."))
+
+    def delete_global_resource(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('delete_global_resource',
+                    self._get_user_input("Global Ressource ID", True, "9cef8acde..."))
+
+    def delete_local_resource(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('delete_local_resource',
+                    self._get_user_input("Local Ressource ID", True, "9cef8acde..."))
+
+    def delete_media(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/Media+API
+            () -> dict or False"""
+
+        return self._api_send_req('delete_media',
+                    self._get_user_input("Media ID", True, "9cef8acde..."))
+
+    def delete_menu(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/Menu+API
+            () -> dict or False"""
+
+        return self._api_send_req('delete_menu',
+                    self._get_user_input("Menu ID", True, "9cef8acde..."))
+
+    def delete_phone_number(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('delete_phone_number',
+                    self._get_user_input("Phone Number ID", True, "9cef8acde..."))
 
     def delete_queue(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Queues+API
             () -> dict or False"""
 
-        queue_id = self._get_user_input("Queue ID", True, "9cef8acde...")
-        return self._api_send_req('delete_queue', queue_id)
+        return self._api_send_req('delete_queue',
+                    self._get_user_input("Queue ID", True, "9cef8acde..."))
+
+    def delete_temporal_rule(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('delete_temporal_rule',
+                    self._get_user_input("Temporal Rule ID", True, "9cef8acde..."))
 
     def delete_user(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
-        user_id = self._get_user_input("User ID", True, "9cef8acde...")
-        return self._api_send_req('delete_usere', user_id)
+        return self._api_send_req('delete_user',
+                    self._get_user_input("User ID", True, "9cef8acde..."))
+
+    def delete_voicemail_box(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/Voicemail+API
+            () -> dict or False"""
+
+        return self._api_send_req('delete_voicemail_box',
+                    self._get_user_input("Voicemail Box ID", True, "9cef8acde..."))
 
     def get_account(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
@@ -259,8 +321,8 @@ class Account(object):
         """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
             () -> dict or False"""
 
-        callfow_id = self._get_user_input("Callflaw ID", True, "9cef8acde...")
-        return self._api_send_req('get_callflow', callfow_id)
+        return self._api_send_req('get_callflow',
+                    self._get_user_input("Callflaw ID", True, "9cef8acde..."))
 
     def get_callflows(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Callflows+API
@@ -268,12 +330,32 @@ class Account(object):
 
         return self._api_send_req('get_callflows')
 
+    def get_conference(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/Conferences+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_conference',
+                    self._get_user_input("Conference ID", True, "9cef8acde..."))
+
+    def get_conferences(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/Conferences+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_conferences')
+
+    def get_deployment(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_deployment',
+                    self._get_user_input("Server ID", True, "9cef8acde..."))
+
     def get_device(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
-        device_id = self._get_user_input("Device ID", True, "9cef8acde...")
-        return self._api_send_req('get_device', device_id)
+        return self._api_send_req('get_device',
+                    self._get_user_input("Device ID", True, "9cef8acde..."))
 
     def get_devices(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
@@ -281,12 +363,82 @@ class Account(object):
 
         return self._api_send_req('get_devices')
 
+    def get_directory(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_directory',
+                    self._get_user_input("Directory ID", True, "9cef8acde..."))
+
+    def get_directories(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_directories')
+
+    def get_global_resource(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_global_resource',
+                    self._get_user_input("Global ressource ID", True, "9cef8acde..."))
+
+    def get_global_resources(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_global_resources')
+
+    def get_hotdesk(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_hotdesk')
+
+    def get_limits(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_limits')
+
+    def get_local_resource(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_local_resource',
+                    self._get_user_input("Local ressource ID", True, "9cef8acde..."))
+
+    def get_local_resources(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_local_resources')
+
+    def get_menu(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/Menus+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_menu',
+                self._get_user_input("Menu ID", True, "9cef8acde..."))
+
+    def get_menus(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/Menus+API
+            () -> dict or False"""
+
+        return self._api_send_req('get_menus')
+
+    def get_phone_numbers(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_phone_numbers')
+
     def get_queue(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Queues+API
             () -> dict or False"""
 
-        queue_id = self._get_user_input("Queue ID", True, "9cef8acde...")
-        return self._api_send_req('get_queue', queue_id)
+        return self._api_send_req('get_queue',
+                self._get_user_input("Queue ID", True, "9cef8acde..."))
 
     def get_queues(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Queues+API
@@ -306,12 +458,25 @@ class Account(object):
 
         return self._api_send_req('get_servers')
 
+    def get_temporal_rule(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_temporal_rule',
+                    self._get_user_input("Temporal rule ID", True, "9cef8acde..."))
+
+    def get_temporal_rules(self):
+        """ https://2600hz.atlassian.net/wiki/display/docs/
+            () -> dict or False"""
+
+        return self._api_send_req('get_temporal_rules')
+
     def get_user(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
-        user_id = self._get_user_input("User ID", True, "9cef8acde...")
-        return self._api_send_req('get_user', user_id)
+        return self._api_send_req('get_user',
+                    self._get_user_input("User ID", True, "9cef8acde..."))
 
     def get_users(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
@@ -323,8 +488,8 @@ class Account(object):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
-        vmbox_id = self._get_user_input("Voicemail Box ID", True, "9cef8acde...")
-        return self._api_send_req('get_voicemail_box', vmbox_id)
+        return self._api_send_req('get_voicemail_box',
+                    self._get_user_input("Voicemail Box ID", True, "9cef8acde..."))
 
     def get_voicemail_boxes(self):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
@@ -336,11 +501,8 @@ class Account(object):
         """ https://2600hz.atlassian.net/wiki/display/docs/Devices+API
             () -> dict or False"""
 
-        # Get the device ID to update
         device_id = self._get_user_input("Device ID", True, u"f3refc4f321...")
-        # Get all the informations
         properties = self._get_user_input_multi(self.kz_struct['device'])
-        # Run the request
         return self._api_send_req('update_device', (device_id, properties))
 
 
