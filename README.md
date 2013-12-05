@@ -13,6 +13,59 @@ Dependencies
  - argparse: https://pypi.python.org/pypi/argparse
  - azoo-api: https://pypi.python.org/pypi/kazoo-api
 
+Installation
+------------
+
+### CentOS
+
+```bash
+yum install python-pip 
+pip install argparse
+pip install kazoo-api
+./vocalize.py acct_id api_key cmd
+```
+
+### Debian 
+
+```bash
+apt-get install python-pip python-argparse
+pip install kazoo-api
+./vocalize.py acct_id api_key cmd
+```
+
+Example
+-------
+
+```
+./vocalize.py e13c3fz551j4da c5e5u452hi5yi23o6pxz96 get_users
+Request status: success
+Response content:
+[
+    {
+        "email": "adrien@crashdump.fr",
+        "features": [
+            "vm_to_email"
+        ],
+        "first_name": "Adrien",
+        "id": "f9bac00f8e6c2063c00f8e6c2063c53b",
+        "last_name": "P.",
+        "priv_level": "user",
+        "username": "adrienp"
+    },
+    {
+        "email": "test@crashdump.fr",
+        "features": [
+            "vm_to_email"
+        ],
+        "first_name": "Test",
+        "id": "e93ee470d03f85ecbac00f8e6c20634c",
+        "last_name": "Test",
+        "priv_level": "user",
+        "username": "testt"
+    }
+]
+```
+
 Commands
 --------
 

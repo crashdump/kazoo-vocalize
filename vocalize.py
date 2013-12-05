@@ -521,8 +521,8 @@ if __name__ == "__main__":
                         default='http://localhost:8000/v1',
                         help='Crossbar API URL. http://localhost:8000/v1')
     parser.add_argument('-v', action='count', dest='verbosity', default=0)
-    parser.add_argument('api_key', action='store', help='API Key')
     parser.add_argument('acct_id', action='store', help='Account ID')
+    parser.add_argument('api_key', action='store', help='API Key')
     parser.add_argument('cmd')
 
     args = parser.parse_args()
